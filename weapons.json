@@ -1,0 +1,54 @@
+{
+  "weapons": [
+    {
+      "name": "MetalSword",
+      "type": "Sword",
+      "description": "A simple sword made of metal.",
+      "damage": 10,
+      "durability": 100,
+      "rarity": "Common",
+      "slot": "MainHand",
+      "value": 100
+    },
+    {
+      "name": "IronMace",
+      "type": "Mace",
+      "description": "A heavy mace made of iron.",
+      "damage": 10,
+      "durability": 100,
+      "rarity": "Common",
+      "slot": "MainHand",
+      "value": 100
+    },
+    {
+      "name": "SteelAxe",
+      "type": "Axe",
+      "description": "A sharp axe made of steel.",
+      "damage": 10,
+      "durability": 100,
+      "rarity": "Common",
+      "slot": "MainHand",
+      "value": 100
+    },
+    {
+      "name": "WoodenBow",
+      "type": "Bow",
+      "description": "A simple bow made of wood.",
+      "damage": 10,
+      "durability": 100,
+      "rarity": "Common",
+      "slot": "MainHand",
+      "value": 100
+    },
+    {
+      "name": "IronDagger",
+      "type": "Dagger",
+      "description": "A small dagger made of iron.",
+      "damage": 10,
+      "durability": 100,
+      "rarity": "Common",
+      "slot": "MainHand",
+      "value": 100
+    }
+  ]
+}
