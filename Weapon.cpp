@@ -28,6 +28,17 @@ public:
 	std::string getRarity() { return rarity; }
 	std::string getSlot() { return slot; }
 	std::string getDescription() { return description; }
+
+	void showWeapon() {
+		std::cout << "Name: " << name << std::endl;
+		std::cout << "Type: " << type << std::endl;
+		std::cout << "Attack: " << attack << std::endl;
+		std::cout << "Durability: " << durability << std::endl;
+		std::cout << "Value: " << value << std::endl;
+		std::cout << "Rarity: " << rarity << std::endl;
+		std::cout << "Slot: " << slot << std::endl;
+		std::cout << "Description: " << description << std::endl;
+	}
 };
 
 #endif // !WEAPON_C

@@ -1,5 +1,34 @@
 #include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <string>
 #include "Player.cpp"
+#include "rapidjson/document.h"
+
+// read json file
+static rapidjson::Document readJson(std::string filename) {
+    rapidjson::Document document;
+
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+		std::cout << "File not found\n";
+        return document;
+	}
+
+    std::string jsonString;
+    std::string line;
+    while (std::getline(file, line)) jsonString += line;
+    file.close();
+
+    document.Parse(jsonString.c_str());
+
+    if (document.HasParseError()) {
+        std::cerr << "JSON parse error: " << document.GetParseError() << '\n';
+        return document;
+    }
+
+    return document;
+}
 
 
 int main() {
@@ -43,11 +72,18 @@ int main() {
 
         player->addGold(100);
         std::cout << "Choose a weapon to take with you\n";
-        std::cout << "1. Sword\n";
-        std::cout << "2. Mace\n";
-        std::cout << "3. Axe\n";
-        std::cout << "4. Bow\n";
-        std::cout << "5. Dagger\n";
+        std::cout << std::setw(20) << "Name" << std::setw(10) << "Attack" << std::setw(10) << "Price" << std::endl;
+
+        rapidjson::Document weaponsDocument = readJson("weapons.json");
+        const rapidjson::Value& weapons = weaponsDocument["weapons"];
+        for (rapidjson::SizeType i = 0; i < weapons.Size(); i++) {
+			const rapidjson::Value& weapon = weapons[i];
+			std::string name = weapon["name"].GetString();
+            int attack = weapon["damage"].GetInt();
+            int price = weapon["value"].GetInt();
+            std::cout << std::setw(20) << name << std::setw(10) << attack << std::setw(10) << price << std::endl;
+			
+		}
 
         std::cout << "\nEnter your choice: ";
         std::cin >> choice;
