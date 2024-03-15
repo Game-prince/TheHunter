@@ -1,0 +1,12 @@
+{
+  "Monsters": {
+    "Goblins": [
+      {
+        "name": "NormalGoblin",
+        "health": 50,
+        "attack": 5,
+        "defense": 2
+      }
+    ]
+  }
+}

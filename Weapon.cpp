@@ -18,6 +18,7 @@ public:
 		this->slot = slot;
 		this->description = description;
 	}
+
 	~Weapon() {}
 
 	std::string getName() { return name; }

@@ -10,7 +10,12 @@ private:
 	std::map<std::string, Weapon*> weapons;
 public:
 	Inventory() {}
-	~Inventory() {}
+	~Inventory() {
+		for (auto it = weapons.begin(); it != weapons.end(); it++) {
+			delete it->second;
+		}
+		weapons.clear();
+	}
 
 	void showInventory() {
 		std::cout << "You have nothing in your inventory\n";
@@ -30,7 +35,7 @@ public:
 		std::cout << std::endl;
 
 		if (weapons.empty()) {
-			std::cout << "You have nothing in your inventory\n";
+			std::cout << "You have nothing in your inventory\n" << std::endl;
 			return;
 		}
 		std::cout << "You have the following items in your inventory:\n";

@@ -16,6 +16,9 @@
     <Filter Include="Source Files\Weapons">
       <UniqueIdentifier>{4ac27b16-80d2-4ca4-b79e-bdc1eef3c0fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Monsters">
+      <UniqueIdentifier>{d58a7df2-2d74-448d-9cb3-712e324ef10e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TheGate.cpp">
@@ -30,10 +33,19 @@
     <ClCompile Include="Inventory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>Source Files\Monsters</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="weapons.json">
       <Filter>Source Files\Weapons</Filter>
+    </None>
+    <None Include="Monsters.json">
+      <Filter>Source Files\Monsters</Filter>
     </None>
   </ItemGroup>
 </Project>
