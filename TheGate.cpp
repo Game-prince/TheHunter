@@ -69,13 +69,16 @@ static int fight(Player* player, Monster* monster) {
         std::cout << monster->getName() << " will attack first\n";
 	}
 
-    std::cout << "============================================\n";
-
+    int round = 0;
     while (player->getHealth() > 0 && monster->getHealth() > 0) {
+
+        std::cout << "================" << (round == 0 ? "First Round" : "Next Round") << "============================\n";
+
         // monster's turn
         if (turn) {
             std::cout << monster->getName() << "'s turn\n";
             monster->doAttack(player);
+            player->showStats();
         }
 
         // player's turn
@@ -100,9 +103,11 @@ static int fight(Player* player, Monster* monster) {
 			}
 
             player->doAttack(monster);
+            monster->showStats();
         }
 
         turn = (turn + 1) % 2;
+        round++;
 	}
 
     if (player->getHealth() == 0) {
@@ -202,6 +207,7 @@ int main() {
             std::cout << std::setw(5) << i + 1 << std::setw(20) << name << std::setw(10) << attack << std::setw(10) << price << std::endl;
 
         }
+        std::cout << std::endl;
 
         std::cout << "\nEnter your choice: ";
         std::cin >> choice;
@@ -227,10 +233,10 @@ int main() {
         // First monster (goblin) encounter
         std::cout << "As you were walking, you saw a monster. The monster is a goblin and he has also sensed you.\n";
 
-        Monster* goblin = new Monster("Goblin", 100, 10, 5, 10);
+        Monster* goblin = new Monster("Goblin", 50, 10, 5, 2);
 
         std::cout << "The goblin is about to attack you\n";
-        std::cout << "What would you like to do?\n";
+        std::cout << "\nWhat would you like to do?\n";
         std::cout << "1. Attack\n";
         std::cout << "2. Run\n";
         std::cout << "3. View stats of the goblin\n";
@@ -241,7 +247,7 @@ int main() {
         std::cin >> choice;
         while (choice != 1 && choice != 2) {
 
-            if (choice == 3) { goblin->showStats(); }
+            if (choice == 3) { goblin->showStats(); std::cout << std::endl; }
             else if (choice == 4) { player->showStats(); }
             else if (choice == 5) { player->showInventory(); }
             else { std::cout << "Invalid choice\n"; }

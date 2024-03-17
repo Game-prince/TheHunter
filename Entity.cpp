@@ -47,17 +47,13 @@ public:
 	void showStats() const {
 		std::cout << std::endl;
 
-		std::cout << this->name << "'s stats:\n";
-		std::cout << "========= stats ==========\n";
+		std::cout << "=========" << this->name << "'s stats ==========\n";
 		std::cout << "Health: " << health << "\n";
 		std::cout << "Mana: " << mana << "\n";
 		std::cout << "Level: " << level << "\n";
 		std::cout << "Attack: " << attack << "\n";
 		std::cout << "Defence: " << defence << "\n";
-		std::cout << "Experience: " << experience << "\n";
-		std::cout << "Gold: " << gold << "\n";
 
-		std::cout << std::endl;
 	}
 
 	// ============= NAME ===========
@@ -147,7 +143,7 @@ public:
 		std::cout << "You lost " << attack << " attack\n";
 	}
 
-	void doAttack(Entity* entity) {
+	void doAttack(Entity* entity) const {
 		entity->dealsDamage(this->attack);
 	}
 
@@ -167,13 +163,13 @@ public:
 	}
 
 	void dealsDamage(int damage) {
-		if (this->health <= damage) {
+		if (this->health + this->defence <= damage) {
 			this->health = 0;
 		}
 		else {
-			this->health -= damage;
+			this->health -= (damage - defence) > 0 ? (damage - defence) : 0;
 		}
-		std::cout << "You received " << damage << " damage\n";
+		std::cout << this->name << " received " << damage << " damage\n";
 	}
 
 	// ============= LEVEL ===========

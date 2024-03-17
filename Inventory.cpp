@@ -3,43 +3,48 @@
 
 #include <iostream>
 #include <map>
-#include "Weapon.cpp"
+#include "Equipable.cpp"
 
 class Inventory {
 private:
-	std::map<std::string, Weapon*> weapons;
+	std::map<std::string, Equipable*> equipables;
 public:
 	Inventory() {}
 	~Inventory() {
-		for (auto it = weapons.begin(); it != weapons.end(); it++) {
+		for (auto it = equipables.begin(); it != equipables.end(); it++) {
 			delete it->second;
 		}
-		weapons.clear();
+		equipables.clear();
 	}
 
 	void showInventory() {
 		std::cout << "You have nothing in your inventory\n";
 	}
 
-	void addItem(Weapon *weapon) {
-		weapons[weapon->getName()] = weapon;
-		std::cout << weapon->getName() << " has been added to your inventory\n";
+	void addItem(Equipable* equipable) {
+		equipables[equipable->getName()] = equipable;
+		std::cout << equipable->getName() << " has been added to your inventory\n";
 	}
 
-	void removeItem(Weapon *weapon) {
-		weapons.erase(weapon->getName());
-		std::cout << weapon->getName() << " has been removed from your inventory\n";
+	void removeItem(std::string name) {
+		if (equipables.find(name) == equipables.end()) {
+			std::cout << "You don't have " << name << " in your inventory\n";
+			return;
+		}
+		delete equipables[name];
+		equipables.erase(name);
+		std::cout << name << " has been removed from your inventory\n";
 	}
 
 	void display() {
 		std::cout << std::endl;
 
-		if (weapons.empty()) {
+		if (equipables.empty()) {
 			std::cout << "You have nothing in your inventory\n" << std::endl;
 			return;
 		}
 		std::cout << "You have the following items in your inventory:\n";
-		for (auto it = weapons.begin(); it != weapons.end(); it++) {
+		for (auto it = equipables.begin(); it != equipables.end(); it++) {
 			std::cout << it->first << "\n";
 		}
 
