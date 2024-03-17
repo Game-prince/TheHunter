@@ -4,6 +4,7 @@
 #include <iostream>
 #include <map>
 #include "Equipable.cpp"
+#include <algorithm>
 
 class Inventory {
 private:
@@ -15,6 +16,21 @@ public:
 			delete it->second;
 		}
 		equipables.clear();
+	}
+
+	Equipable* getItem(std::string name) {
+
+		std::transform(name.begin(), name.end(), name.begin(), ::tolower);
+		for (auto it = equipables.begin(); it != equipables.end(); it++) {
+			std::string itemName = it->first;
+			std::transform(itemName.begin(), itemName.end(), itemName.begin(), ::tolower);
+
+			if (itemName == name) {
+				return it->second;
+			}
+		}
+
+		return nullptr;
 	}
 
 	void addItem(Equipable* equipable) {
@@ -44,7 +60,8 @@ public:
 		int count = 1;
 		for (auto it = equipables.begin(); it != equipables.end(); it++) {
 			std::cout << count << ". ";
-			std::cout << it->first << "\n";
+			std::cout << it->first << " ";
+			if (count % 5 == 0) std::cout << std::endl;
 			count++;
 		}
 		std::cout << std::endl;

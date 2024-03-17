@@ -7,7 +7,7 @@
       "damage": 10,
       "durability": 100,
       "rarity": "Common",
-      "slot": "MainHand",
+      "slot": "hand",
       "value": 100
     },
     {
@@ -17,7 +17,7 @@
       "damage": 10,
       "durability": 100,
       "rarity": "Common",
-      "slot": "MainHand",
+      "slot": "hand",
       "value": 100
     },
     {
@@ -27,7 +27,7 @@
       "damage": 10,
       "durability": 100,
       "rarity": "Common",
-      "slot": "MainHand",
+      "slot": "hand",
       "value": 100
     },
     {
@@ -37,7 +37,7 @@
       "damage": 10,
       "durability": 100,
       "rarity": "Common",
-      "slot": "MainHand",
+      "slot": "hand",
       "value": 100
     },
     {
@@ -47,7 +47,7 @@
       "damage": 10,
       "durability": 100,
       "rarity": "Common",
-      "slot": "MainHand",
+      "slot": "hand",
       "value": 100
     }
   ]

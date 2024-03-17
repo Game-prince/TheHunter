@@ -45,7 +45,7 @@ static Equipable* createWeapon(const rapidjson::Value& weapon) {
 	int value = weapon["value"].GetInt();
 	std::string rarity = weapon["rarity"].GetString();
 	std::string slot = weapon["slot"].GetString();
-	std::string description = weapon["description"].GetString();
+    std::string description = weapon["description"].GetString();
 
 	return new Equipable(name, type, DMG, durability, value, rarity, slot, description, 0);
 }
@@ -162,35 +162,34 @@ int main() {
         std::cout << "You are a hunter who was hired to clear a dungeon of monsters.\n";
         std::cout << "You are now standing in front of the gate of the dungeon.\n";
 
-        std::cout << "\nWhat would you like to do?\n";
-        std::cout << "1. Enter the dungeon\n";
-        std::cout << "2. Exit game\n";
-        std::cout << "3. Check your inventory\n";
-        std::cout << "4. Check your stats\n";
+		int choice;
+        do {
+            std::cout << "\nWhat would you like to do?\n";
+            std::cout << "1. Enter the dungeon\n";
+            std::cout << "2. Exit game\n";
+            std::cout << "3. Check your inventory\n";
+            std::cout << "4. Check your stats\n";
 
-        int choice;
-        std::cout << "\nEnter your choice: ";
-        std::cin >> choice;
-        while (choice != 1 && choice != 2) {
+            std::cout << "\nEnter your choice: ";
+            std::cin >> choice;
 
-            if (choice == 3) {
-                player->showInventory();
+
+            if (choice == 2) {
+                std::cout << "You left the game\n";
+                return 0;
+            }
+			else if (choice == 3) {
+                    player->showInventory();
             }
             else if (choice == 4) {
                 player->showStats();
-            }
+			}
             else {
                 std::cout << "Invalid choice\n";
             }
-            std::cout << "Choose again: ";
-            std::cin >> choice;
-        }
-
-        std::cout << "\n============================================\n";
-        if (choice == 2) {
-            std::cout << "You left the game\n";
-            return 0;
-        }
+            std::cout << "\n============================================\n";
+            
+        } while (choice != 1);
 
         // First weapon
         player->updateGold(100);
@@ -235,59 +234,58 @@ int main() {
 
         Monster* goblin = new Monster("Goblin", 50, 10, 5, 2);
 
-        std::cout << "The goblin is about to DMG you\n";
-        std::cout << "\nWhat would you like to do?\n";
-        std::cout << "1. Attack\n";
-        std::cout << "2. Run\n";
-        std::cout << "3. View stats of the goblin\n";
-        std::cout << "4. View your stats\n";
-        std::cout << "5. View your inventory\n";
+        std::cout << "The goblin is about to Attack you\n";
+        choice = 0;
+        do {
+            std::cout << "\nWhat would you like to do?\n";
+            std::cout << "1. Attack\n";
+            std::cout << "2. Run\n";
+            std::cout << "3. View stats of the goblin\n";
+            std::cout << "4. View your stats\n";
+            std::cout << "5. View your inventory\n";
 
-        std::cout << "\nEnter your choice: ";
-        std::cin >> choice;
-        while (choice != 1 && choice != 2) {
-
-            if (choice == 3) { goblin->showStats(); std::cout << std::endl; }
-            else if (choice == 4) { player->showStats(); }
-            else if (choice == 5) { player->showInventory(); }
-            else { std::cout << "Invalid choice\n"; }
-            
-            std::cout << "Choose again: ";
+            std::cout << "\nEnter your choice: ";
             std::cin >> choice;
-        }
-        
-        std::cout << "\n============================================\n";
-        if (choice == 1) {
-            int result = fight(player, goblin);
-            if (result == 1) {
-				std::cout << "Game over\n";
+
+            if (choice == 1) {
+                int result = fight(player, goblin);
+                if (result == 1) {
+                    std::cout << "Game over\n";
+                    int choice = gameOverOption();
+
+                    if (choice == 2) {
+                        return 0;
+                    }
+                    else if (choice == 1) {
+                        system("cls");
+                        continue;
+                    }
+
+                }
+            }
+            else if (choice == 2) {
+                std::cout << "\nGoblins are fast creatures and you can't run away from him\n";
+                std::cout << "The goblin DMGed you and you lost\n";
+                std::cout << "Game over\n";
+
                 int choice = gameOverOption();
 
                 if (choice == 2) {
-					return 0;
-				}
+                    return 0;
+                }
                 else if (choice == 1) {
-					system("cls");
-					continue;
-				}
-
-			}
-        }
-        else if (choice == 2) {
-            std::cout << "\nGoblins are fast creatures and you can't run away from him\n";
-            std::cout << "The goblin DMGed you and you lost\n";
-            std::cout << "Game over\n";
-
-			int choice = gameOverOption();
-
-            if (choice == 2) {
-                return 0;
+                    system("cls");
+                    continue;
+                }
             }
-            else if (choice == 1) {
-                system("cls");
-				continue;
-			}
-        }
+            else  if (choice == 3) { goblin->showStats(); std::cout << std::endl; }
+            else if (choice == 4) { player->showStats(); }
+            else if (choice == 5) { player->showInventory(); }
+            else { std::cout << "Invalid choice\n"; }
+
+            std::cout << "\n============================================\n";
+            
+        } while (choice != 1);
 
         std::cout << "\n============================================\n";
         player->showStats();

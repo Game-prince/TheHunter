@@ -17,8 +17,7 @@ public:
 		equipped["chest"] = nullptr;
 		equipped["legs"] = nullptr;
 		equipped["feet"] = nullptr;
-		equipped["leftHand"] = nullptr;
-		equipped["rightHand"] = nullptr;
+		equipped["hand"] = nullptr;
 
 		inventory = new Inventory();
 	}
@@ -34,6 +33,42 @@ public:
 		inventory->display();
 
 		std::cout << "\n";
+		std::cout << "1. Equip an item\n";
+		std::cout << "2. View an item\n";
+		std::cout << "3. Go back\n";
+
+		std::cout << "\nEnter your choice: ";
+		int choice; std::cin >> choice;
+
+		while (choice < 1 && choice > 3) {
+			std::cout << "Invalid choice\n";
+			std::cout << "Choose again: ";
+			std::cin >> choice;
+		}
+
+		if (choice == 1) {
+			std::cout << "Enter the name of the item you want to equip: ";
+			std::string name; std::cin >> name;
+			Equipable* item = inventory->getItem(name);
+			if (item) {
+				this->equipItem(item);
+			}
+			else {
+				std::cout << "You don't have " << name << " in your inventory\n";
+			}
+		}
+		else if (choice == 2) {
+			std::cout << "Enter the name of the item you want to view: ";
+			std::string name; std::cin >> name;
+			Equipable* item = inventory->getItem(name);
+			if (item) {
+				item->viewDetails();
+			}
+			else {
+				std::cout << "You don't have " << name << " in your inventory\n";
+			}
+		}
+		else return;
 	}
 
 	void buyItem(Equipable* item) {
@@ -73,8 +108,7 @@ public:
 		std::cout << "Chest: " << (equipped.at("chest") == nullptr ? "Nothing" : equipped.at("chest")->getName()) << "\n";
 		std::cout << "Legs: " << (equipped.at("legs") == nullptr ? "Nothing" : equipped.at("legs")->getName()) << "\n";
 		std::cout << "Feet: " << (equipped.at("feet") == nullptr ? "Nothing" : equipped.at("feet")->getName()) << "\n";
-		std::cout << "Left Hand: " << (equipped.at("leftHand") == nullptr ? "Nothing" : equipped.at("leftHand")->getName()) << "\n";
-		std::cout << "Right Hand: " << (equipped.at("rightHand") == nullptr ? "Nothing" : equipped.at("rightHand")->getName()) << "\n";
+		std::cout << "Hand: " << (equipped.at("hand") == nullptr ? "Nothing" : equipped.at("hand")->getName()) << "\n";
 		std::cout << std::endl;
 	}
 
@@ -89,14 +123,16 @@ public:
 
 		// equip the item at slot and remove the item from inventory
 		this->equipped[slot] = item;
-		this->removeItem(item);
 		this->updateStats(item);
+		std::cout << "You have equipped " << item->getName() << " at " << slot << "\n";
+		this->removeItem(item);
 	}
 
 	Equipable* removeEquipped(std::string slot) {
 
 		Equipable* current = this->equipped[slot];
 		this->equipped[slot] = nullptr;
+		std::cout << "You have removed " << current->getName() << " from " << slot << "\n";
 		this->updateStats(current, false);
 
 		return current;
