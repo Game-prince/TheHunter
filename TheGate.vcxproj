@@ -128,17 +128,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Equipable.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="TheGate.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\Rishikesh Kumar\Dropbox\My PC %28LAPTOP-KP31EEKV%29\Desktop\Installers\VisualStudio\rapidjson-1.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
-    <ClCompile Include="Weapon.cpp">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\Rishikesh Kumar\Dropbox\My PC %28LAPTOP-KP31EEKV%29\Desktop\Installers\VisualStudio\rapidjson-1.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="armors.json" />
     <None Include="Monsters.json" />
     <None Include="weapons.json" />
   </ItemGroup>

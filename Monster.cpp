@@ -7,7 +7,7 @@
 class Monster :public Entity {
 private:
 public:
-	Monster(std::string name,int health, int mana, int baseAttack, int baseDefence) : Entity(name,health, mana, baseAttack, baseDefence) {}
+	Monster(std::string name,int HP, int MP, int baseDMG, int baseDef) : Entity(name,HP, MP, baseDMG, baseDef) {}
 };
 
 #endif // !MONSTER_C

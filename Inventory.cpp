@@ -17,16 +17,13 @@ public:
 		equipables.clear();
 	}
 
-	void showInventory() {
-		std::cout << "You have nothing in your inventory\n";
-	}
-
 	void addItem(Equipable* equipable) {
 		equipables[equipable->getName()] = equipable;
 		std::cout << equipable->getName() << " has been added to your inventory\n";
 	}
 
-	void removeItem(std::string name) {
+	void removeItem(Equipable* item) {
+		std::string name = item->getName();
 		if (equipables.find(name) == equipables.end()) {
 			std::cout << "You don't have " << name << " in your inventory\n";
 			return;
@@ -44,12 +41,16 @@ public:
 			return;
 		}
 		std::cout << "You have the following items in your inventory:\n";
+		int count = 1;
 		for (auto it = equipables.begin(); it != equipables.end(); it++) {
+			std::cout << count << ". ";
 			std::cout << it->first << "\n";
+			count++;
 		}
-
 		std::cout << std::endl;
 	}
+
+	int size() { return (int)this->equipables.size(); }
 };
 
 #endif // !INVENTORY_C

@@ -8,10 +8,8 @@
 #include "Monster.cpp"
 #include "rapidjson/document.h"
 
-
 // contains all the entities
 static std::vector<Entity*> entities;
-
 
 // read json file
 static rapidjson::Document readJson(std::string filename) {
@@ -39,17 +37,17 @@ static rapidjson::Document readJson(std::string filename) {
 }
 
 // create weapon from json
-static Weapon* createWeapon(const rapidjson::Value& weapon) {
+static Equipable* createWeapon(const rapidjson::Value& weapon) {
 	std::string name = weapon["name"].GetString();
 	std::string type = weapon["type"].GetString();
-	int attack = weapon["damage"].GetInt();
+	int DMG = weapon["damage"].GetInt();
 	int durability = weapon["durability"].GetInt();
 	int value = weapon["value"].GetInt();
 	std::string rarity = weapon["rarity"].GetString();
 	std::string slot = weapon["slot"].GetString();
 	std::string description = weapon["description"].GetString();
 
-	return new Weapon(name, type, attack, durability, value, rarity, slot, description);
+	return new Equipable(name, type, DMG, durability, value, rarity, slot, description, 0);
 }
 
 // fight with monster
@@ -61,23 +59,23 @@ static int fight(Player* player, Monster* monster) {
     int toss = rand() % 2;
     if (toss == 0) {
 		playerFirst = true;
-        std::cout << "You will attack first\n";
+        std::cout << "You will DMG first\n";
 	}
     else {
 		playerFirst = false;
         turn = 1;
-        std::cout << monster->getName() << " will attack first\n";
+        std::cout << monster->getName() << " will DMG first\n";
 	}
 
     int round = 0;
-    while (player->getHealth() > 0 && monster->getHealth() > 0) {
+    while (player->getHP() > 0 && monster->getHP() > 0) {
 
         std::cout << "================" << (round == 0 ? "First Round" : "Next Round") << "============================\n";
 
         // monster's turn
         if (turn) {
             std::cout << monster->getName() << "'s turn\n";
-            monster->doAttack(player);
+            monster->doDMG(player);
             player->showStats();
         }
 
@@ -85,7 +83,7 @@ static int fight(Player* player, Monster* monster) {
         else {
             std::cout << player->getName() << "'s(your) turn\n";
             std::cout << "What would you like to do?\n";
-            std::cout << "1. Attack\n";
+            std::cout << "1. DMG\n";
             std::cout << "2. Run\n";
 
             int choice;
@@ -98,11 +96,11 @@ static int fight(Player* player, Monster* monster) {
 
             if (choice == 2) {
 				std::cout << "You can't run away from the monster\n";
-				std::cout << "The monster attacked you and you lost\n";
+				std::cout << "The monster DMGed you and you lost\n";
 				return 1; // player lost
 			}
 
-            player->doAttack(monster);
+            player->doDMG(monster);
             monster->showStats();
         }
 
@@ -110,7 +108,9 @@ static int fight(Player* player, Monster* monster) {
         round++;
 	}
 
-    if (player->getHealth() == 0) {
+    std::cout << "\n====================== Fight Results ================" << std::endl;
+
+    if (player->getHP() == 0) {
         std::cout << "You lost\n";
         return 1; // player lost
     }
@@ -193,18 +193,18 @@ int main() {
         }
 
         // First weapon
-        player->addGold(100);
+        player->updateGold(100);
         std::cout << "Choose a weapon to take with you\n";
-        std::cout << std::setw(5) << "Sr." << std::setw(20) << "Name" << std::setw(10) << "Attack" << std::setw(10) << "Price" << std::endl;
+        std::cout << std::setw(5) << "Sr." << std::setw(20) << "Name" << std::setw(10) << "DMG" << std::setw(10) << "Price" << std::endl;
 
         const rapidjson::Document weaponsDocument = readJson("weapons.json");
         const rapidjson::Value& weapons = weaponsDocument["weapons"];
         for (rapidjson::SizeType i = 0; i < weapons.Size(); i++) {
             const rapidjson::Value& weapon = weapons[i];
             std::string name = weapon["name"].GetString();
-            int attack = weapon["damage"].GetInt();
+            int DMG = weapon["damage"].GetInt();
             int price = weapon["value"].GetInt();
-            std::cout << std::setw(5) << i + 1 << std::setw(20) << name << std::setw(10) << attack << std::setw(10) << price << std::endl;
+            std::cout << std::setw(5) << i + 1 << std::setw(20) << name << std::setw(10) << DMG << std::setw(10) << price << std::endl;
 
         }
         std::cout << std::endl;
@@ -217,7 +217,7 @@ int main() {
             std::cin >> choice;
         }
 
-        Weapon* w = createWeapon(weapons[choice - 1]);
+        Equipable* w = createWeapon(weapons[choice - 1]);
         player->buyItem(w);
         player->showInventory();
 
@@ -235,7 +235,7 @@ int main() {
 
         Monster* goblin = new Monster("Goblin", 50, 10, 5, 2);
 
-        std::cout << "The goblin is about to attack you\n";
+        std::cout << "The goblin is about to DMG you\n";
         std::cout << "\nWhat would you like to do?\n";
         std::cout << "1. Attack\n";
         std::cout << "2. Run\n";
@@ -243,7 +243,7 @@ int main() {
         std::cout << "4. View your stats\n";
         std::cout << "5. View your inventory\n";
 
-        std::cout << "Enter your choice: ";
+        std::cout << "\nEnter your choice: ";
         std::cin >> choice;
         while (choice != 1 && choice != 2) {
 
@@ -272,13 +272,10 @@ int main() {
 				}
 
 			}
-            else {
-				std::cout << "You won\n";
-			}
         }
         else if (choice == 2) {
             std::cout << "\nGoblins are fast creatures and you can't run away from him\n";
-            std::cout << "The goblin attacked you and you lost\n";
+            std::cout << "The goblin DMGed you and you lost\n";
             std::cout << "Game over\n";
 
 			int choice = gameOverOption();

@@ -2,189 +2,160 @@
 #define ENTITY_C
 
 #include <iostream>
-#include "Inventory.cpp"
 
 class Entity {
 private:
 	std::string name;
-	int health, mana, level, attack, defence, experience, gold, baseAttack, baseDefence;
-	Inventory* inventory;
+
+	// HP
+	int maxHP, HP, baseHP;
+
+	// MP
+	int maxMP, MP;
+
+	// DMG
+	int baseDMG, DMG;
+
+	// Def
+	int baseDef, Def;
+
+	int level, experience, gold;
 public:
 	Entity() {
 		this->name = "Player";
-		this->health = 0;
-		this->mana = 0;
+		this->maxHP = this->baseHP = 0;
+		this->HP = 0;
+		this->maxMP = 0;
+		this->MP = 0;
+		this->baseDMG = 0;
+		this->DMG = 0;
+		this->baseDef = 0;
+		this->Def = 0;
 		this->level = 1;
-		this->baseAttack = 0;
-		this->baseDefence = 0;
-		this->attack = 0;
-		this->defence = 0;
 		this->experience = 0;
 		this->gold = 0;
 
-		inventory = new Inventory();
 	}
 
-	Entity(std::string name,int health, int mana, int baseAttack, int baseDefence) {
+	Entity(std::string name,int HP, int MP, int baseDMG, int baseDef) {
 		this->name = name;
-		this->health = health;
-		this->mana = mana;
+		this->maxHP = this->HP = this->baseHP = HP;
+		this->maxMP = this->MP = MP;
+		this->baseDMG = this->DMG = baseDMG;
+		this->baseDef = this->Def = baseDef;
 		this->level = 1;
-		this->baseAttack = baseAttack;
-		this->baseDefence = baseDefence;
-		this->attack = baseAttack;
-		this->defence = baseDefence;
 		this->experience = 0;
 		this->gold = 0;
 
-		inventory = new Inventory();
-	}
-
-	~Entity() {
-		delete inventory;
 	}
 
 	void showStats() const {
 		std::cout << std::endl;
 
 		std::cout << "=========" << this->name << "'s stats ==========\n";
-		std::cout << "Health: " << health << "\n";
-		std::cout << "Mana: " << mana << "\n";
+		std::cout << "HP: " << HP << "\n";
+		std::cout << "MP: " << MP << "\n";
 		std::cout << "Level: " << level << "\n";
-		std::cout << "Attack: " << attack << "\n";
-		std::cout << "Defence: " << defence << "\n";
+		std::cout << "DMG: " << DMG << "\n";
+		std::cout << "Def: " << Def << "\n";
 
 	}
 
 	// ============= NAME ===========
-	std::string getName() const {
-		return name;
-	}
-
-
-	// ============= INVENTORY ===========
-	void addItem(Weapon* weapon) {
-		inventory->addItem(weapon);
-	}
-	void removeItem(Weapon* weapon) {
-		inventory->removeItem(weapon);
-	}
-	void showInventory() {
-		inventory->display();
-	}
-
+	std::string getName() const { return name; }
+	
 	// ============= GOLD ===========
-	int getGold() const {
-		return gold;
-	}
-
-	void addGold(int gold) {
-		this->gold += gold;
-		std::cout << "You received " << gold << " gold\n";
-	}
-
-	void removeGold(int gold) {
-		this->gold -= gold;
-		std::cout << "You lost " << gold << " gold\n";
+	int getGold() const {return gold;}
+	void updateGold(int gold, bool adding = true) {
+		if (adding) {
+			this->gold += gold;
+			std::cout << "You received " << gold << " gold\n";
+		}
+		else {
+			this->gold -= gold;
+			if (this->gold < 0) this->gold = 0;
+			std::cout << "You lost " << gold << " gold\n";
+		}
 	}
 
 	// ============= EXPERIENCE ===========
-	int getExperience() const {
-		return experience;
-	}
+	int getExperience() const {return experience;}
 	void addExperience(int experience) {
 		this->experience += experience;
 		std::cout << "You received " << experience << " experience\n";
 	}
-	void removeExperience(int experience) {
-		this->experience -= experience;
-		std::cout << "You lost " << experience << " experience\n";
-	}
 
-	// ============= HEALTH ===========
-	int getHealth() const {
-		return health;
-	}
-	void addHealth(int health) {
-		this->health += health;
-		std::cout << "You received " << health << " health\n";
-	}
-	void removeHealth(int health) {
-		this->health -= health;
-		std::cout << "You lost " << health << " health\n";
-	}
-
-	// ============= MANA ===========
-	int getMana() const {
-		return mana;
-	}
-
-	void addMana(int mana) {
-		this->mana += mana;
-		std::cout << "You received " << mana << " mana\n";
-	}
-
-	void removeMana(int mana) {
-		this->mana -= mana;
-		std::cout << "You lost " << mana << " mana\n";
-	}
-
-	// ============= Attack ===========
-	int getAttack() const {
-		return attack;
-	}
-	void addAttack(int attack) {
-		this->attack += attack;
-		std::cout << "You received " << attack << " attack\n";
-	}
-
-	void removeAttack(int attack) {
-		this->attack -= attack;
-		std::cout << "You lost " << attack << " attack\n";
-	}
-
-	void doAttack(Entity* entity) const {
-		entity->dealsDamage(this->attack);
-	}
-
-	// ============= Defence ===========
-	int getDefence() const {
-		return defence;
-	}
-
-	void addDefence(int defence) {
-		this->defence += defence;
-		std::cout << "You received " << defence << " defence\n";
-	}
-
-	void removeDefence(int defence) {
-		this->defence -= defence;
-		std::cout << "You lost " << defence << " defence\n";
-	}
-
-	void dealsDamage(int damage) {
-		if (this->health + this->defence <= damage) {
-			this->health = 0;
+	// ============= HP ===========
+	int getMaxHP() const {return maxHP;}
+	int getHP() const { return HP;}
+	void updateHP(int hp, bool adding = true) {
+		if (adding) {
+			this->HP += HP;
+			std::cout << "You received " << HP << " HP\n";
 		}
 		else {
-			this->health -= (damage - defence) > 0 ? (damage - defence) : 0;
+			this->HP -= HP;
+			if (this->HP < 0) this->HP = 0;
+			std::cout << "You lost " << HP << " HP\n";
+		}
+	}
+
+	// ============= MP ===========
+	int getMaxMP() const { return this->maxMP; }
+	int getMP() const {return MP;}
+	void updateMP(int MP, bool adding = true) {
+		if (adding) {
+			this->MP += MP;
+			std::cout << "You received " << MP << " MP\n";
+		}
+		else {
+			this->MP -= MP;
+			if (this->MP < 0) this->MP = 0;
+			std::cout << "You lost " << MP << " MP\n";
+		}
+	}
+
+	// ============= DMG ===========
+	int getDMG() const {return DMG;}
+	void updateDMG(int DMG, bool adding=true) {
+		if (adding) {
+			this->DMG += DMG;
+			std::cout << "You received " << DMG << " DMG\n";
+		}
+		else {
+			this->DMG -= DMG;
+			std::cout << "You lost " << DMG << " DMG\n";
+		}
+	}
+	void doDMG(Entity* entity) const {entity->dealsDamage(this->DMG);}
+
+	// ============= Def ===========
+	int getDef() const {return Def;}
+	void updateDef(int def, bool add = true) {
+		if (add) {
+			this->Def += Def;
+			std::cout << "You received " << Def << " Def\n";
+		}
+		else {
+			this->Def -= Def;
+			std::cout << "You lost " << Def << " Def\n";
+		}
+	}
+	void dealsDamage(int damage) {
+		if (this->HP + this->Def <= damage) {
+			this->HP = 0;
+		}
+		else {
+			this->HP -= (damage - Def) > 0 ? (damage - Def) : 0;
 		}
 		std::cout << this->name << " received " << damage << " damage\n";
 	}
 
 	// ============= LEVEL ===========
-	int getLevel() const {
-		return level;
-	}
-
+	int getLevel() const {return level;}
 	void addLevel(int level) {
 		this->level += level;
 		std::cout << "You received " << level << " level\n";
-	}
-
-	void removeLevel(int level) {
-		this->level -= level;
-		std::cout << "You lost " << level << " level\n";
 	}
 
 };

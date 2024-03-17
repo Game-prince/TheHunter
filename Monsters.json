@@ -3,8 +3,8 @@
     "Goblins": [
       {
         "name": "NormalGoblin",
-        "health": 50,
-        "attack": 5,
+        "HP": 50,
+        "DMG": 5,
         "defense": 2
       }
     ]
